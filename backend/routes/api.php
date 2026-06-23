@@ -25,6 +25,9 @@ Route::get('/opportunities', [InvestmentController::class, 'index']);
 Route::get('/opportunities/{id}', [InvestmentController::class, 'show']);
 
 Route::post('/contact', [ContactController::class, 'store']);
+Route::get('/test', function () {
+    return ['message' => 'API is working!'];
+});
 
 // ─── AUTHENTICATED ROUTES ───────────────────────────────────
 Route::middleware('auth:sanctum')->group(function () {
