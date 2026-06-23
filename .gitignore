@@ -1,0 +1,29 @@
+# PHP/Laravel
+/vendor/
+.env
+.env.*
+storage/*.key
+public/storage
+*.log
+.htaccess
+.phpunit.result.cache
+
+# Node/Vue
+/node_modules/
+/dist/
+.DS_Store
+*.local
+*.log
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# System
+Thumbs.db
+.DS_Store
+
+# CleverCloud
+.clever.json
