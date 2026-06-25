@@ -37,6 +37,9 @@ RUN chown -R www-data:www-data /var/www/html \
 # Configure Apache to serve from public directory
 RUN sed -i 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/000-default.conf
 
+# Fix DocumentRoot
+RUN echo "DocumentRoot /var/www/html/public" >> /etc/apache2/apache2.conf
+
 # Expose port 80
 EXPOSE 80
 
