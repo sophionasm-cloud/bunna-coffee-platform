@@ -31,6 +31,16 @@ COPY . .
 # Install dependencies
 RUN composer install --no-dev --optimize-autoloader
 
+# ====== DEBUG: Show routes file ======
+RUN echo "===== ROUTES FILE ====="
+RUN cat routes/api.php | head -30
+
+# ====== DEBUG: Clear route cache ======
+RUN php artisan route:clear
+
+# ====== DEBUG: Show registered routes ======
+RUN php artisan route:list || true
+
 # Create storage directories
 RUN mkdir -p /var/www/html/storage/logs \
     && mkdir -p /var/www/html/storage/framework/cache \
