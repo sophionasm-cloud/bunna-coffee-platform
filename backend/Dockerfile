@@ -1,5 +1,7 @@
 FROM php:8.4-apache
 
+# FORCE REBUILD - 2026-06-25
+
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     git \
