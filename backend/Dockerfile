@@ -29,6 +29,8 @@ WORKDIR /var/www/html
 
 # Copy application files
 COPY . .
+# Debug: Show routes file content
+RUN cat routes/api.php | head -20
 
 # Install dependencies
 RUN composer install --no-dev --optimize-autoloader
