@@ -1,0 +1,10 @@
+vendor/
+node_modules/
+.git/
+.env
+storage/*.key
+public/storage
+*.log
+.idea/
+.vscode/
+.htaccess
