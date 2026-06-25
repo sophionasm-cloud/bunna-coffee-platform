@@ -1,7 +1,5 @@
 FROM php:8.4-apache
 
-# FORCE REBUILD - 2026-06-25
-
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     git \
@@ -29,8 +27,6 @@ WORKDIR /var/www/html
 
 # Copy application files
 COPY . .
-# Debug: Show routes file content
-RUN cat routes/api.php | head -20
 
 # Install dependencies
 RUN composer install --no-dev --optimize-autoloader
@@ -47,6 +43,9 @@ RUN chown -R www-data:www-data /var/www/html/storage \
     && chown -R www-data:www-data /var/www/html/bootstrap/cache \
     && chmod -R 777 /var/www/html/storage \
     && chmod -R 777 /var/www/html/bootstrap/cache
+
+# FIX: Additional storage logs permission
+RUN chmod -R 777 /var/www/html/storage/logs
 
 # Remove default Apache config and create new one with FallbackRoute
 RUN rm -f /etc/apache2/sites-available/000-default.conf
