@@ -34,14 +34,15 @@ RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html/storage \
     && chmod -R 755 /var/www/html/bootstrap/cache
 
-# Configure Apache to serve from public directory
+# Configure Apache
 RUN sed -i 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/000-default.conf
 
-# Fix DocumentRoot
-RUN echo "DocumentRoot /var/www/html/public" >> /etc/apache2/apache2.conf
+# Allow .htaccess to override
+RUN sed -i '/<Directory \/var\/www\/html>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
 
-# Expose port 80
+# RUN MIGRATIONS (ADD THIS)
+RUN php artisan migrate --force || true
+RUN php artisan db:seed --force || true
+
 EXPOSE 80
-
-# Start Apache
 CMD ["apache2-foreground"]
