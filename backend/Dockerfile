@@ -72,9 +72,9 @@ RUN echo '</VirtualHost>' >> /etc/apache2/sites-available/000-default.conf
 # Enable the site
 RUN a2ensite 000-default.conf
 
-# Run migrations
-RUN php artisan migrate --force || true
-RUN php artisan db:seed --force || true
+
 
 EXPOSE 80
-CMD ["apache2-foreground"]
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
+CMD ["/start.sh"]
