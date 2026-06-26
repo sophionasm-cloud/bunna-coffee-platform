@@ -24,3 +24,12 @@ Route::get('/check-db', function () {
         return response()->json(['error' => $e->getMessage()]);
     }
 });
+Route::get('/check-token/{token}', function ($token) {
+    try {
+        $id = explode('|', $token)[0];
+        $pat = DB::table('personal_access_tokens')->where('id', $id)->first();
+        return response()->json($pat);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()]);
+    }
+});
