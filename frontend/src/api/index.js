@@ -13,9 +13,9 @@ export const authApi = {
 export const productsApi = {
   list:   (params) => api.get('/products', { params }),
   show:   (id)     => api.get(`/products/${id}`),
-  create: (data)   => api.post('/admin/products', data),        // ✅ Fixed
-  update: (id, data) => api.put(`/admin/products/${id}`, data), // ✅ Fixed
-  delete: (id)     => api.delete(`/admin/products/${id}`),      // ✅ Fixed
+  create: (data)   => api.post('/admin/products', data),
+  update: (id, data) => api.put(`/admin/products/${id}`, data),
+  delete: (id)     => api.delete(`/admin/products/${id}`),
 }
 
 // ─── ORDERS ─────────────────────────────────────────────
@@ -30,12 +30,8 @@ export const ordersApi = {
 export const listingsApi = {
   list:   (params) => api.get('/listings', { params }),
   show:   (id)     => api.get(`/listings/${id}`),
-  create: (data)   => api.post('/listings', data, {
-    headers: { 'Content-Type': 'multipart/form-data' }
-  }),
-  update: (id, d)  => api.post(`/listings/${id}?_method=PUT`, d, {
-    headers: { 'Content-Type': 'multipart/form-data' }
-  }),
+  create: (data)   => api.post('/listings', data), // ✅ Removed manual Content-Type
+  update: (id, d)  => api.post(`/listings/${id}?_method=PUT`, d), // ✅ Removed manual Content-Type
   delete: (id)     => api.delete(`/listings/${id}`),
 }
 

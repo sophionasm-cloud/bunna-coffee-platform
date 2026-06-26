@@ -1,6 +1,5 @@
 import axios from 'axios'
 
-// Use environment variable if available, otherwise use production URL
 const API_URL = import.meta.env.VITE_API_URL || 'https://bunna-coffee-platform.onrender.com/api'
 
 const api = axios.create({
@@ -12,14 +11,20 @@ const api = axios.create({
   }
 })
 
-// Request interceptor – attach token
+// Request interceptor – attach token and fix multipart headers
 api.interceptors.request.use(config => {
   const token = localStorage.getItem('bunna_token')
   if (token) config.headers.Authorization = `Bearer ${token}`
+  
+  // ✅ Let browser set Content-Type automatically for FormData
+  if (config.data instanceof FormData) {
+    delete config.headers['Content-Type']
+  }
+
   return config
 })
 
-// Response interceptor – handle 401
+// Response interceptor – only logout on auth routes
 api.interceptors.response.use(
   res => res,
   err => {
