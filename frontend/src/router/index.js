@@ -101,6 +101,11 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   const auth = useAuthStore()
 
+  // ✅ Restore session if token exists but user is not loaded
+  if (auth.token && !auth.user) {
+    await auth.fetchUser()
+  }
+
   if (to.meta.requiresAuth && !auth.isLoggedIn) {
     return next({ name: 'login', query: { redirect: to.fullPath } })
   }
