@@ -18,16 +18,19 @@ return [
 
     'allowed_methods' => ['*'],
 
- 'allowed_origins' => [
-    'http://localhost:5173',
-    'http://localhost:5174',
-    'http://localhost:3000',
-    'http://localhost:8000',
-    'https://bunna-coffee-platform.vercel.app',
-    'https://bunna-coffee-platform-dh3ha9r0q-sophionasm-clouds-projects.vercel.app', // ✅ ADD THIS
-],
+    'allowed_origins' => [
+        'http://localhost:5173',
+        'http://localhost:5174',
+        'http://localhost:3000',
+        'http://localhost:8000',
+        'https://bunna-coffee-platform.vercel.app',
+        'https://bunna-coffee-platform-dh3ha9r0q-sophionasm-clouds-projects.vercel.app',
+        'https://bunna-coffee-platform-auisw7384-sophionasm-clouds-projects.vercel.app',
+    ],
 
-    'allowed_origins_patterns' => [],
+    'allowed_origins_patterns' => [
+        '#^https://bunna-coffee-platform.*\.vercel\.app$#', // ✅ Allows ALL future Vercel URLs automatically
+    ],
 
     'allowed_headers' => ['*'],
 
