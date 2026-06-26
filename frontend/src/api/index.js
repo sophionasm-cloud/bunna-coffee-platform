@@ -13,9 +13,9 @@ export const authApi = {
 export const productsApi = {
   list:   (params) => api.get('/products', { params }),
   show:   (id)     => api.get(`/products/${id}`),
-  create: (data)   => api.post('/products', data),
-  update: (id, data) => api.put(`/products/${id}`, data),
-  delete: (id)     => api.delete(`/products/${id}`),
+  create: (data)   => api.post('/admin/products', data),        // ✅ Fixed
+  update: (id, data) => api.put(`/admin/products/${id}`, data), // ✅ Fixed
+  delete: (id)     => api.delete(`/admin/products/${id}`),      // ✅ Fixed
 }
 
 // ─── ORDERS ─────────────────────────────────────────────
