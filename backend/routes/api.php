@@ -36,6 +36,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [AuthController::class, 'me']);
     Route::put('/profile', [UserController::class, 'update']);
 
+    // ✅ Farmer's own listings
+    Route::get('/my-listings', [ListingController::class, 'myListings']);
+
     Route::get('/orders', [OrderController::class, 'index']);
     Route::post('/orders', [OrderController::class, 'store']);
     Route::get('/orders/{id}', [OrderController::class, 'show']);

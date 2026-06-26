@@ -9,25 +9,30 @@ use Illuminate\Support\Facades\Storage;
 
 class ListingController extends Controller
 {
-    // Public: Get all approved listings
     public function index()
     {
         $listings = Listing::where('status', 'approved')
             ->orWhere('status', 'pending')
             ->latest()
             ->paginate(12);
-        
         return response()->json($listings);
     }
 
-    // Public: Get single listing
     public function show($id)
     {
         $listing = Listing::findOrFail($id);
         return response()->json($listing);
     }
 
-    // Farmer: Create listing
+    // ✅ NEW - Farmer's own listings
+    public function myListings(Request $request)
+    {
+        $listings = Listing::where('user_id', $request->user()->id)
+            ->latest()
+            ->get();
+        return response()->json($listings);
+    }
+
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -42,27 +47,20 @@ class ListingController extends Controller
             'image' => 'nullable|image|max:2048',
         ]);
 
-        // Handle image upload
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('listings', 'public');
         }
 
         $data['user_id'] = $request->user()->id;
         $data['status'] = 'pending';
-
         $listing = Listing::create($data);
 
-        return response()->json([
-            'message' => 'Listing created successfully!',
-            'listing' => $listing
-        ], 201);
+        return response()->json(['message' => 'Listing created successfully!', 'listing' => $listing], 201);
     }
 
-    // Farmer: Update listing
     public function update(Request $request, $id)
     {
         $listing = Listing::findOrFail($id);
-        
         if ($listing->user_id !== $request->user()->id) {
             return response()->json(['message' => 'Unauthorized'], 403);
         }
@@ -80,59 +78,36 @@ class ListingController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            if ($listing->image) {
-                Storage::disk('public')->delete($listing->image);
-            }
+            if ($listing->image) Storage::disk('public')->delete($listing->image);
             $data['image'] = $request->file('image')->store('listings', 'public');
         }
 
         $listing->update($data);
-
-        return response()->json([
-            'message' => 'Listing updated successfully!',
-            'listing' => $listing
-        ]);
+        return response()->json(['message' => 'Listing updated successfully!', 'listing' => $listing]);
     }
 
-    // Farmer: Delete listing
     public function destroy(Request $request, $id)
     {
         $listing = Listing::findOrFail($id);
-        
         if ($listing->user_id !== $request->user()->id) {
             return response()->json(['message' => 'Unauthorized'], 403);
         }
-
-        if ($listing->image) {
-            Storage::disk('public')->delete($listing->image);
-        }
-
+        if ($listing->image) Storage::disk('public')->delete($listing->image);
         $listing->delete();
-
         return response()->json(['message' => 'Listing deleted successfully.']);
     }
 
-    // Admin: Approve listing
     public function approve($id)
     {
         $listing = Listing::findOrFail($id);
         $listing->update(['status' => 'approved']);
-        
-        return response()->json([
-            'message' => 'Listing approved successfully!',
-            'listing' => $listing
-        ]);
+        return response()->json(['message' => 'Listing approved!', 'listing' => $listing]);
     }
 
-    // Admin: Reject listing
     public function reject($id)
     {
         $listing = Listing::findOrFail($id);
         $listing->update(['status' => 'draft']);
-        
-        return response()->json([
-            'message' => 'Listing rejected.',
-            'listing' => $listing
-        ]);
+        return response()->json(['message' => 'Listing rejected.', 'listing' => $listing]);
     }
 }
