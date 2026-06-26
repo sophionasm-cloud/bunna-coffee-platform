@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+use Laravel\Sanctum\PersonalAccessToken;
+
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\OrderController;
@@ -30,13 +33,31 @@ Route::get('/test', function () {
     return response()->json(['message' => 'API is working!']);
 });
 
+// ─── SANCTUM DEBUG ROUTE ────────────────────────────────────
+Route::get('/sanctum-debug', function (Request $request) {
+
+    $token = $request->bearerToken();
+
+    $accessToken = $token
+        ? PersonalAccessToken::findToken($token)
+        : null;
+
+    return response()->json([
+        'bearer_token' => $token,
+        'token_found' => $accessToken !== null,
+        'tokenable_id' => $accessToken?->tokenable_id,
+        'request_user' => $request->user(),
+        'auth_check' => auth()->check(),
+    ]);
+});
+
 // ─── AUTHENTICATED ROUTES ───────────────────────────────────
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/me', [AuthController::class, 'me']);
     Route::put('/profile', [UserController::class, 'update']);
 
-    // ✅ Farmer's own listings
+    // Farmer's own listings
     Route::get('/my-listings', [ListingController::class, 'myListings']);
 
     Route::get('/orders', [OrderController::class, 'index']);
@@ -60,14 +81,18 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::patch('/users/{id}/role', [AdminController::class, 'updateRole']);
         Route::delete('/users/{id}', [AdminController::class, 'deleteUser']);
         Route::patch('/users/{id}/toggle', [AdminController::class, 'toggleUser']);
+
         Route::get('/products', [ProductController::class, 'adminIndex']);
         Route::post('/products', [ProductController::class, 'store']);
         Route::put('/products/{id}', [ProductController::class, 'update']);
         Route::delete('/products/{id}', [ProductController::class, 'destroy']);
+
         Route::get('/orders', [OrderController::class, 'adminIndex']);
         Route::patch('/orders/{id}/status', [OrderController::class, 'adminUpdateStatus']);
+
         Route::patch('/listings/{id}/approve', [ListingController::class, 'approve']);
         Route::patch('/listings/{id}/reject', [ListingController::class, 'reject']);
+
         Route::post('/opportunities', [InvestmentController::class, 'store']);
         Route::put('/opportunities/{id}', [InvestmentController::class, 'update']);
         Route::delete('/opportunities/{id}', [InvestmentController::class, 'destroy']);
