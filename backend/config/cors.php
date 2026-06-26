@@ -26,6 +26,7 @@ return [
         'https://bunna-coffee-platform.vercel.app',
         'https://bunna-coffee-platform-dh3ha9r0q-sophionasm-clouds-projects.vercel.app',
         'https://bunna-coffee-platform-auisw7384-sophionasm-clouds-projects.vercel.app',
+        'https://bunna-coffee-platform-hxjsukhb8-sophionasm-clouds-projects.vercel.app',
     ],
 
     'allowed_origins_patterns' => [
