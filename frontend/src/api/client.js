@@ -1,7 +1,10 @@
 import axios from 'axios'
 
+// Use environment variable if available, otherwise use production URL
+const API_URL = import.meta.env.VITE_API_URL || 'https://bunna-coffee-platform.onrender.com/api'
+
 const api = axios.create({
- baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000/api',
+  baseURL: API_URL,
   withCredentials: true,
   headers: {
     'Accept': 'application/json',
