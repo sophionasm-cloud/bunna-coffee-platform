@@ -18,13 +18,14 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => [
-        'http://localhost:5173',
-        'http://localhost:5174',
-        'http://localhost:3000',
-        'http://localhost:8000',
-        'https://bunna-coffee-platform.vercel.app', // I added this for the host
-    ],
+ 'allowed_origins' => [
+    'http://localhost:5173',
+    'http://localhost:5174',
+    'http://localhost:3000',
+    'http://localhost:8000',
+    'https://bunna-coffee-platform.vercel.app',
+    'https://bunna-coffee-platform-dh3ha9r0q-sophionasm-clouds-projects.vercel.app', // ✅ ADD THIS
+],
 
     'allowed_origins_patterns' => [],
 
