@@ -15,7 +15,6 @@ Route::get('/login', function () {
     return response()->json(['message' => 'Unauthenticated.'], 401);
 })->name('login');
 
-// ✅ Temporary DB check
 Route::get('/check-db', function () {
     try {
         $tables = DB::select("SELECT tablename FROM pg_tables WHERE schemaname = 'public'");
@@ -24,11 +23,27 @@ Route::get('/check-db', function () {
         return response()->json(['error' => $e->getMessage()]);
     }
 });
+
 Route::get('/check-token/{token}', function ($token) {
     try {
         $id = explode('|', $token)[0];
         $pat = DB::table('personal_access_tokens')->where('id', $id)->first();
         return response()->json($pat);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()]);
+    }
+});
+
+// ✅ NEW - Make test token
+Route::get('/make-token', function () {
+    try {
+        $user = \App\Models\User::first();
+        $token = $user->createToken('test')->plainTextToken;
+        return response()->json([
+            'token' => $token,
+            'user_id' => $user->id,
+            'email' => $user->email
+        ]);
     } catch (\Exception $e) {
         return response()->json(['error' => $e->getMessage()]);
     }
