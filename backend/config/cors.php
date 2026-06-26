@@ -23,6 +23,7 @@ return [
         'http://localhost:5174',
         'http://localhost:3000',
         'http://localhost:8000',
+        'https://bunna-coffee-platform.vercel.app', // I added this for the host
     ],
 
     'allowed_origins_patterns' => [],
