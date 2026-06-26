@@ -4,7 +4,7 @@
     <div class="pattern-border"></div>
 
     <!-- Navbar -->
-    <nav class="bg-coffee-950 text-white sticky top-0 z-50 shadow-warm-lg">
+    <nav class="bg-cream-200 text-coffee-700 sticky top-0 z-50 shadow-md border-b border-coffee-200">
       <div class="container-main">
         <div class="flex items-center justify-between h-16">
           <!-- Logo -->
